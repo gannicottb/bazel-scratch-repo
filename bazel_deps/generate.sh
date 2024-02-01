@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO_ROOT=$(realpath ~/projects/bazel-scratch-repo)
+REPO_ROOT=$(git rev-parse --show-toplevel)
 
 scala::deps() {
   # `deps_dir` is relative from REPO_ROOT to the folder that contains:
