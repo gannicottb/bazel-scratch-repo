@@ -1,4 +1,5 @@
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library", "scala_binary")
+load("//scala/build:scalac_opts.bzl", "SCALAC_OPTS")
 
 scala_library(
     name = "app",
@@ -6,7 +7,7 @@ scala_library(
     main_class = "com.github.gannicottb.app.Main",
     plugins = [],
     resources = glob(["src/main/resources/*"]),
-    scalacopts = [],
+    scalacopts = SCALAC_OPTS,
     unused_dependency_checker_mode = "error",
     visibility = [
         "//visibility:public",
