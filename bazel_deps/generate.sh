@@ -9,7 +9,7 @@ scala::deps() {
   # 3rdparty/
   #   workspace.bzl
   #   target_file.bzl
-  # example usage: `mack scala::deps projects/clusterrisk/bazel`
+  # example usage: `generate.sh scala`
 
   local deps_dir=${1%/}
 

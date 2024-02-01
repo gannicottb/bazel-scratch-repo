@@ -10,12 +10,6 @@ options:
     - id: "central"
       type: "default"
       url: https://repo1.maven.org/maven2
-    - id: "confluent"
-      type: "default"
-      url: https://packages.confluent.io/maven/
-    - id: "jitpack"
-      type: "default"
-      url: https://jitpack.io
   strictVisibility: true
   thirdPartyDirectory: ""
   transitivity: exports
