@@ -1,3 +1,6 @@
+build --verbose_failures
+build --sandbox_tmpfs_path=/tmp
+
 # Workaround to prevent OSX from picking up host headers. These can fail the protoc
 # build when another version is present on the host. A better solution is to define
 # strict c++ toolchain to prevent this issue.
