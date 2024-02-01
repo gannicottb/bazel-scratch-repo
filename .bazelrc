@@ -1,0 +1,10 @@
+# Workaround to prevent OSX from picking up host headers. These can fail the protoc
+# build when another version is present on the host. A better solution is to define
+# strict c++ toolchain to prevent this issue.
+# https://github.com/bazelbuild/bazel/issues/8053#issuecomment-642880936
+build --sandbox_block_path=/usr/local
+
+build --java_language_version=11
+build --java_runtime_version=remotejdk_11
+build --tool_java_language_version=11
+build --tool_java_runtime_version=remotejdk_11

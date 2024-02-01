@@ -1,0 +1,10 @@
+package(default_visibility = ["//visibility:public"])
+
+# Select correct bazel_deps based on platform
+alias(
+    name = "bazel_deps",
+    actual = select({
+        "@platforms//os:macos": "@bazeltools_bazel_deps_macos//file:downloaded",
+        "@platforms//os:linux": "@bazeltools_bazel_deps_linux//file:downloaded",
+    }),
+)

@@ -1,0 +1,28 @@
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library", "scala_binary")
+
+scala_library(
+    name = "app",
+    srcs = glob(["src/main/scala/**/*.scala"]),
+    main_class = "com.github.gannicottb.app.Main",
+    plugins = [],
+    resources = glob(["src/main/resources/*"]),
+    scalacopts = [],
+    unused_dependency_checker_mode = "error",
+    visibility = [
+        "//visibility:public",
+    ],
+    runtime_deps = [
+        "@scratch_3rdparty//ch/qos/logback:logback_classic",
+    ],
+    deps = [
+        "@scratch_3rdparty//com/typesafe/scala_logging"
+    ],
+)
+
+scala_binary(
+    name = "bin",
+    main_class = "com.github.gannicottb.app.Main",
+    deps = [
+        ":app"
+    ]
+)
