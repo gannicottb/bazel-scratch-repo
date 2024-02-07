@@ -1,10 +1,14 @@
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
 skylib_version = "1.3.0"
+
 protobuf_version = "3.19.4"
-bazel_deps_version = "0.1-52"
+
+rules_jvm_external_version = "4.5"
+
 rules_scala_version = "6.3.0"
+
 scala_version = "2.12.18"
 
 maybe(
@@ -14,6 +18,7 @@ maybe(
     type = "tar.gz",
     url = "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/{}/bazel-skylib-{}.tar.gz".format(skylib_version, skylib_version),
 )
+
 maybe(
     http_archive,
     name = "com_google_protobuf",
@@ -25,9 +30,11 @@ maybe(
 )
 
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
 bazel_skylib_workspace()
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
 protobuf_deps()
 
 # Scala
@@ -40,41 +47,79 @@ maybe(
 )
 
 load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
+
 scala_config(scala_version = scala_version)
 
 load("@io_bazel_rules_scala//scala_proto:scala_proto.bzl", "scala_proto_repositories")
 load("@io_bazel_rules_scala//scala_proto:toolchains.bzl", "scala_proto_register_toolchains")
+
 scala_proto_repositories()
+
 scala_proto_register_toolchains()
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
-scala_repositories(fetch_sources = True)
+
+scala_repositories(
+    fetch_sources = True,
+)
 
 load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
+
 scala_register_toolchains()
 
 load("@io_bazel_rules_scala//testing:scalatest.bzl", "scalatest_repositories", "scalatest_toolchain")
+
 scalatest_repositories()
+
 scalatest_toolchain()
 
-# Bazel-Deps
-maybe(
-    http_file,
-    name = "bazeltools_bazel_deps_macos",
-    sha256 = "a37ebb76fefc3961c5c1cf5461395dcd18694f200ea12ea140947838d1946d19",
-    url = "https://github.com/bazeltools/bazel-deps/releases/download/v{}/bazel-deps-macos".format(bazel_deps_version),
-    executable = True,
-)
-maybe(
-    http_file,
-    name = "bazeltools_bazel_deps_linux",
-    sha256 = "bf9395f2d664cb4871fc48a1062e0b2e7d6cf0c0e442e115f654d275c5e6560e",
-    url = "https://github.com/bazeltools/bazel-deps/releases/download/v{}/bazel-deps-linux".format(bazel_deps_version),
-    executable = True,
+# rules_jvm_external
+
+http_archive(
+    name = "rules_jvm_external",
+    sha256 = "b17d7388feb9bfa7f2fa09031b32707df529f26c91ab9e5d909eb1676badd9a6",
+    strip_prefix = "rules_jvm_external-%s" % rules_jvm_external_version,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % rules_jvm_external_version,
 )
 
-load("//scala/3rdparty:workspace.bzl", maven_dependencies = "maven_dependencies")
-load("//scala/3rdparty:target_file.bzl", build_external_workspace = "build_external_workspace")
+load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
 
-maven_dependencies()
-build_external_workspace(name = "scratch_3rdparty")
+rules_jvm_external_deps()
+
+load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+
+rules_jvm_external_setup()
+
+# deps - TODO: how to put this section into a separate file? do we need a repository_rule for that?
+
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+
+maven_install(
+    name = "data_onchain_3rdparty",
+    artifacts = [
+        "ch.qos.logback:logback-classic:1.4.14",
+        "com.typesafe.scala-logging:scala-logging_2.12:3.9.5",
+        "org.slf4j:slf4j-api:2.0.7",
+    ],
+    fail_if_repin_required = True,
+    fail_on_missing_checksum = True,
+    fetch_javadoc = True,
+    fetch_sources = True,
+    maven_install_json = "@//deps:data_onchain_3rdparty_install.json",  # where is the pin file
+    override_targets = {
+        # same as bazel-deps "replacements"
+        "org.scala-lang:scala-compiler": "@io_bazel_rules_scala_scala_compiler",
+        "org.scala-lang:scala-library": "@io_bazel_rules_scala_scala_library",
+        "org.scala-lang:scala-reflect": "@io_bazel_rules_scala_scala_reflect",
+    },
+    repositories = [
+        "https://oss.sonatype.org/content/repositories/public/",
+        "https://repo1.maven.org/maven2",
+    ],
+    strict_visibility = True,
+    version_conflict_policy = "pinned",
+)
+
+load("@data_onchain_3rdparty//:defs.bzl", "pinned_maven_install")
+
+pinned_maven_install()

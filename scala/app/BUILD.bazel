@@ -1,4 +1,4 @@
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library", "scala_binary")
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary", "scala_library")
 load("//scala/build:scalac_opts.bzl", "SCALAC_OPTS")
 
 scala_library(
@@ -13,10 +13,11 @@ scala_library(
         "//visibility:public",
     ],
     runtime_deps = [
-        "@scratch_3rdparty//ch/qos/logback:logback_classic",
+        "@data_onchain_3rdparty//:ch_qos_logback_logback_classic",
     ],
     deps = [
-        "@scratch_3rdparty//com/typesafe/scala_logging"
+        "@data_onchain_3rdparty//:com_typesafe_scala_logging_scala_logging_2_12",
+        "@data_onchain_3rdparty//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -24,6 +25,6 @@ scala_binary(
     name = "bin",
     main_class = "com.github.gannicottb.app.Main",
     deps = [
-        ":app"
-    ]
+        ":app",
+    ],
 )
