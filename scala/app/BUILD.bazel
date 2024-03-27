@@ -13,11 +13,11 @@ scala_library(
         "//visibility:public",
     ],
     runtime_deps = [
-        "@data_onchain_3rdparty//:ch_qos_logback_logback_classic",
+        "@maven//:ch_qos_logback_logback_classic",
     ],
     deps = [
-        "@data_onchain_3rdparty//:com_typesafe_scala_logging_scala_logging_2_12",
-        "@data_onchain_3rdparty//:org_slf4j_slf4j_api",
+        "@maven//:com_typesafe_scala_logging_scala_logging_2_12",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
