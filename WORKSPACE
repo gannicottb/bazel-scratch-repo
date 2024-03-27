@@ -95,7 +95,7 @@ rules_jvm_external_setup()
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
-    name = "data_onchain_3rdparty",
+    name = "maven",
     artifacts = [
         "ch.qos.logback:logback-classic:1.4.14",
         "com.typesafe.scala-logging:scala-logging_2.12:3.9.5",
@@ -105,7 +105,7 @@ maven_install(
     fail_on_missing_checksum = True,
     fetch_javadoc = True,
     fetch_sources = True,
-    maven_install_json = "@//deps:data_onchain_3rdparty_install.json",  # where is the pin file
+    maven_install_json = "@//deps:maven_install.json",  # where is the pin file
     override_targets = {
         # same as bazel-deps "replacements"
         "org.scala-lang:scala-compiler": "@io_bazel_rules_scala_scala_compiler",
@@ -120,6 +120,6 @@ maven_install(
     version_conflict_policy = "pinned",
 )
 
-load("@data_onchain_3rdparty//:defs.bzl", "pinned_maven_install")
+load("@maven//:defs.bzl", "pinned_maven_install")
 
 pinned_maven_install()
