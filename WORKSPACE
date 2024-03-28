@@ -94,27 +94,34 @@ rules_jvm_external_setup()
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("@rules_jvm_external//:specs.bzl", "maven")
-load("//deps:extensions.bzl", "scala")
+load("//deps:extensions.bzl", "scala", "wrap")
 
 maven_install(
     name = "maven",
-    artifacts = [
-        # out of date
-        scala("org.slf4j:slf4j-api:2.0.7", foo = "bar", baz = []),
-        maven.artifact(
-            artifact = "logback-classic",
-            exclusions = [
-                "org.slf4j:slf4j-log4j12",
-            ],
-            group = "ch.qos.logback",
-            version = "1.4.14",
-        ),
-        maven.artifact(
-            artifact = "scala-logging_2.12",
-            group = "com.typesafe.scala-logging",
-            version = "3.9.5",
-        ),
-    ],
+    artifacts = wrap(
+        [
+            # out of date
+            scala(
+                "org.slf4j:slf4j-api:2.0.7",
+                baz = [],
+                foo = "bar",
+            ),
+            maven.artifact(
+                artifact = "logback-classic",
+                exclusions = [
+                    "org.slf4j:slf4j-log4j12",
+                ],
+                group = "ch.qos.logback",
+                version = "1.4.14",
+            ),
+            maven.artifact(
+                artifact = "scala-logging_2.12",
+                group = "com.typesafe.scala-logging",
+                version = "3.9.5",
+            ),
+        ],
+        ["2.13"],
+    ),
     fail_if_repin_required = True,
     fail_on_missing_checksum = True,
     fetch_javadoc = True,
