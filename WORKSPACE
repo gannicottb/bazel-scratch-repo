@@ -97,12 +97,15 @@ load("@rules_jvm_external//:specs.bzl", "maven")
 load("//deps:extensions.bzl", "add_scala_version", "scala", "wrap")
 
 slf4j_version = "2.0.7"
+
 logback_version = "1.4.14"
+
 maven_install(
     name = "maven",
     artifacts = wrap(
         [
             # simple strings will take precedence and "hide" other updates
+            "io.higherkindness:droste-core_2.12:0.9.0",
             scala(
                 "org.slf4j:slf4j-api:%s" % slf4j_version,
                 baz = [],
