@@ -94,7 +94,7 @@ rules_jvm_external_setup()
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("@rules_jvm_external//:specs.bzl", "maven")
-load("//deps:extensions.bzl", "scala", "wrap")
+load("//deps:extensions.bzl", "add_scala_version", "scala", "wrap")
 
 maven_install(
     name = "maven",
@@ -114,10 +114,13 @@ maven_install(
                 group = "ch.qos.logback",
                 version = "1.4.14",
             ),
-            maven.artifact(
-                artifact = "scala-logging_2.12",
-                group = "com.typesafe.scala-logging",
-                version = "3.9.5",
+            add_scala_version(
+                maven.artifact(
+                    artifact = "scala-logging",
+                    group = "com.typesafe.scala-logging",
+                    version = "3.9.4",
+                ),
+                "2.12",
             ),
         ],
         ["2.13"],
