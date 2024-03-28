@@ -101,14 +101,13 @@ maven_install(
         "slf4j-api:org.slf4j:2.0.12",
         maven.artifact(
             artifact = "logback-classic",
+            exclusions = [
+                "org.slf4j:slf4j-log4j12",
+            ],
             group = "ch.qos.logback",
             version = "1.4.14",
-            exclusions = [
-                "org.slf4j:slf4j-log4j12"
-            ]
         ),
         maven.artifact(
-            exclusi,
             artifact = "scala-logging_2.12",
             group = "com.typesafe.scala-logging",
             version = "3.9.5",
