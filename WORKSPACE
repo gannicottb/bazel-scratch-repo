@@ -94,11 +94,13 @@ rules_jvm_external_setup()
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("@rules_jvm_external//:specs.bzl", "maven")
+load("//deps:extensions.bzl", "scala")
 
 maven_install(
     name = "maven",
     artifacts = [
-        "org.slf4j:slf4j-api:2.0.12",
+        # out of date
+        scala("org.slf4j:slf4j-api:2.0.7"),
         maven.artifact(
             artifact = "logback-classic",
             exclusions = [
