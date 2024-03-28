@@ -93,13 +93,29 @@ rules_jvm_external_setup()
 # deps - TODO: how to put this section into a separate file? do we need a repository_rule for that?
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
+load("@rules_jvm_external//:specs.bzl", "maven")
 
 maven_install(
     name = "maven",
     artifacts = [
-        "ch.qos.logback:logback-classic:1.4.14",
-        "com.typesafe.scala-logging:scala-logging_2.12:3.9.5",
-        "org.slf4j:slf4j-api:2.0.7",
+        maven.artifact(
+            artifact = "logback-classic",
+            group = "ch.qos.logback",
+            version = "1.4.14",
+        ),
+        maven.artifact(
+            artifact = "scala-logging_2.12",
+            group = "com.typesafe.scala-logging",
+            version = "3.9.5",
+        ),
+        maven.artifact(
+            artifact = "slf4j-api",
+            group = "org.slf4j",
+            version = "2.0.7",
+        ),
+        #"ch.qos.logback:logback-classic:1.4.14",
+        #"com.typesafe.scala-logging:scala-logging_2.12:3.9.5",
+        #"org.slf4j:slf4j-api:2.0.7",
     ],
     fail_if_repin_required = True,
     fail_on_missing_checksum = True,
