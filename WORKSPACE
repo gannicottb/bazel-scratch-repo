@@ -96,13 +96,15 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("@rules_jvm_external//:specs.bzl", "maven")
 load("//deps:extensions.bzl", "add_scala_version", "scala", "wrap")
 
+slf4j_version = "2.0.7"
+logback_version = "1.4.14"
 maven_install(
     name = "maven",
     artifacts = wrap(
         [
-            # out of date
+            # simple strings will take precedence and "hide" other updates
             scala(
-                "org.slf4j:slf4j-api:2.0.7",
+                "org.slf4j:slf4j-api:%s" % slf4j_version,
                 baz = [],
                 foo = "bar",
             ),
@@ -112,7 +114,7 @@ maven_install(
                     "org.slf4j:slf4j-log4j12",
                 ],
                 group = "ch.qos.logback",
-                version = "1.4.14",
+                version = logback_version,
             ),
             add_scala_version(
                 maven.artifact(
