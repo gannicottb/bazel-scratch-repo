@@ -98,20 +98,20 @@ load("@rules_jvm_external//:specs.bzl", "maven")
 maven_install(
     name = "maven",
     artifacts = [
+        "slf4j-api:org.slf4j:2.0.12",
         maven.artifact(
             artifact = "logback-classic",
             group = "ch.qos.logback",
             version = "1.4.14",
+            exclusions = [
+                "org.slf4j:slf4j-log4j12"
+            ]
         ),
         maven.artifact(
+            exclusi,
             artifact = "scala-logging_2.12",
             group = "com.typesafe.scala-logging",
             version = "3.9.5",
-        ),
-        maven.artifact(
-            artifact = "slf4j-api",
-            group = "org.slf4j",
-            version = "2.0.7",
         ),
     ],
     fail_if_repin_required = True,
