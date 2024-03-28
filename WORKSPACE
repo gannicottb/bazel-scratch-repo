@@ -105,7 +105,7 @@ maven_install(
     artifacts = wrap(
         [
             # simple strings will take precedence and "hide" other updates
-            "io.higherkindness:droste-core_2.12:0.9.0",
+            "eu.timepit:fs2-cron-cron4s_2.12:0.8.3",
             scala(
                 "org.slf4j:slf4j-api:%s" % slf4j_version,
                 baz = [],
