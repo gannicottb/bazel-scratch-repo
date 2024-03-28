@@ -120,9 +120,9 @@ maven_install(
             ),
             scala(
                 maven.artifact(
-                    artifact = "scala-logging",
-                    group = "com.typesafe.scala-logging",
-                    version = "3.9.4",
+                    "com.typesafe.scala-logging",
+                    "scala-logging",
+                    "3.9.4",
                 ),
             ),
         ],
