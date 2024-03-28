@@ -100,7 +100,7 @@ maven_install(
     name = "maven",
     artifacts = [
         # out of date
-        scala("org.slf4j:slf4j-api:2.0.7"),
+        scala("org.slf4j:slf4j-api:2.0.7", foo = "bar", baz = []),
         maven.artifact(
             artifact = "logback-classic",
             exclusions = [
