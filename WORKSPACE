@@ -94,7 +94,7 @@ rules_jvm_external_setup()
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("@rules_jvm_external//:specs.bzl", "maven")
-load("//deps:extensions.bzl", "add_scala_version", "scala", "wrap")
+load("//deps:extensions.bzl", "derive", "java", "scala")
 
 slf4j_version = "2.0.7"
 
@@ -102,33 +102,31 @@ logback_version = "1.4.14"
 
 maven_install(
     name = "maven",
-    artifacts = wrap(
+    artifacts = derive(
         [
-            # simple strings will take precedence and "hide" other updates
-            "eu.timepit:fs2-cron-cron4s_2.12:0.8.3",
-            scala(
+            scala("eu.timepit:fs2-cron-cron4s:0.8.3"),
+            java(
                 "org.slf4j:slf4j-api:%s" % slf4j_version,
-                baz = [],
-                foo = "bar",
             ),
-            maven.artifact(
-                artifact = "logback-classic",
-                exclusions = [
-                    "org.slf4j:slf4j-log4j12",
-                ],
-                group = "ch.qos.logback",
-                version = logback_version,
+            java(
+                maven.artifact(
+                    artifact = "logback-classic",
+                    exclusions = [
+                        "org.slf4j:slf4j-log4j12",
+                    ],
+                    group = "ch.qos.logback",
+                    version = logback_version,
+                ),
             ),
-            add_scala_version(
+            scala(
                 maven.artifact(
                     artifact = "scala-logging",
                     group = "com.typesafe.scala-logging",
                     version = "3.9.4",
                 ),
-                "2.12",
             ),
         ],
-        ["2.13"],
+        ["2.12"],
     ),
     fail_if_repin_required = True,
     fail_on_missing_checksum = True,
